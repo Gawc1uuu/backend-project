@@ -25,6 +25,16 @@ public class Client {
     private String phoneNumber;
 
 
+    public Client(String name, String lastName, LocalDate birthDate, String userName, String password, String adress, String phoneNumber) {
+        this.name = name;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.userName = userName;
+        this.password = password;
+        this.adress = adress;
+        this.phoneNumber = phoneNumber;
+    }
+
 
 
 
