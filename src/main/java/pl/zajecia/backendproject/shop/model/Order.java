@@ -31,6 +31,7 @@ public class Order {
     private Client client;
     @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
+    private double totalPrice;
 
     public Order(Client client) {
         this.client = client;
