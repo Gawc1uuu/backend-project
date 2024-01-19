@@ -1,12 +1,6 @@
 package pl.zajecia.backendproject.shop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +28,10 @@ public class Order {
     private Set<OrderItem> orderItems = new HashSet<>();
     private double totalPrice;
 
-    public Order(Client client) {
+    public Order(LocalDateTime orderDate, Client client, Set<OrderItem> orderItems, double totalPrice) {
+        this.orderDate = orderDate;
         this.client = client;
-        this.orderDate = LocalDateTime.now();
+        this.orderItems = orderItems;
+        this.totalPrice = totalPrice;
     }
-
 }
