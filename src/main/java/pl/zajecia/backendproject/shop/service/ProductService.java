@@ -16,6 +16,10 @@ public class ProductService {
     private final ProductRepository repository;
 
     public void addProduct(ProductCommand command) {
+        if(command.getName()==null) throw new IllegalArgumentException("name cannot be null");
+        if(command.getPrice()==null) throw new IllegalArgumentException("price cannot be null");
+        if(command.getQuantity()==null) throw new IllegalArgumentException("quantity cannot be null");
+
         Product product = new Product(command.getName(), command.getPrice(), command.getQuantity());
         repository.saveAndFlush(product);
     }
@@ -35,6 +39,7 @@ public class ProductService {
 
     public List<Product> gettingProducts(){
         List<Product> products = repository.findAll();
+        if(products.isEmpty()) throw new IllegalArgumentException("cannot find products");
         return products;
     }
 }
