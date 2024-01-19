@@ -5,13 +5,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.zajecia.backendproject.shop.exception.UserAlreadyExistsException;
 import pl.zajecia.backendproject.shop.model.Client;
 import pl.zajecia.backendproject.shop.model.command.ClientCommand;
 import pl.zajecia.backendproject.shop.model.command.LoginCommand;
+import pl.zajecia.backendproject.shop.reponse.UserAlreadyExistsResponse;
 import pl.zajecia.backendproject.shop.service.ClientService;
 
 @RestController
@@ -31,6 +34,11 @@ public class ClientController {
     public ResponseEntity<Client> login(@RequestBody LoginCommand command) {
         Client client = clientService.login(command);
         return new ResponseEntity<>(client, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<UserAlreadyExistsResponse> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        return new ResponseEntity<>(new UserAlreadyExistsResponse(e.getMessage(), e.getEmail()), HttpStatus.BAD_REQUEST);
     }
 
 }

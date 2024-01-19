@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.zajecia.backendproject.shop.model.Product;
 import pl.zajecia.backendproject.shop.model.command.ProductCommand;
+import pl.zajecia.backendproject.shop.model.dto.ProductDto;
 import pl.zajecia.backendproject.shop.service.ProductService;
 
 import java.util.List;
@@ -34,13 +35,14 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@RequestBody ProductCommand command, @PathVariable Long id){
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductCommand command, @PathVariable Long id) {
         Product product = productService.updateProduct(id, command);
-        return  new ResponseEntity<>(product, HttpStatus.OK);
+        ProductDto productDto = ProductDto.fromEntity(product);
+        return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> gettingProducts(){
+    public ResponseEntity<List<Product>> gettingProducts() {
         List<Product> products = productService.gettingProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
