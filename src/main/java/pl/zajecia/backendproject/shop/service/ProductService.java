@@ -16,11 +16,8 @@ public class ProductService {
     private final ProductRepository repository;
 
     public void addProduct(ProductCommand command) {
-
         Product product = new Product(command.getName(), command.getPrice(), command.getQuantity());
-
         repository.saveAndFlush(product);
-
     }
 
     public Product findById(Long id){
