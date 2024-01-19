@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -14,9 +15,9 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
-
+    private String email;
     private String lastName;
     private LocalDate birthDate;
     private String userName;
@@ -25,8 +26,9 @@ public class Client {
     private String phoneNumber;
 
 
-    public Client(String name, String lastName, LocalDate birthDate, String userName, String password, String adress, String phoneNumber) {
+    public Client(String name, String email, String lastName, LocalDate birthDate, String userName, String password, String adress, String phoneNumber) {
         this.name = name;
+        this.email = email;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.userName = userName;
@@ -34,16 +36,4 @@ public class Client {
         this.adress = adress;
         this.phoneNumber = phoneNumber;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }
