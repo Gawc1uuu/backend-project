@@ -6,9 +6,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.zajecia.backendproject.shop.exception.ProductCannotBeEmptyException;
+import pl.zajecia.backendproject.shop.exception.ProductDontExistsException;
 import pl.zajecia.backendproject.shop.model.Product;
 import pl.zajecia.backendproject.shop.model.command.ProductCommand;
 import pl.zajecia.backendproject.shop.model.dto.ProductDto;
+import pl.zajecia.backendproject.shop.reponse.ProductCannotBeEmptyResponse;
+import pl.zajecia.backendproject.shop.reponse.ProductDontExistsResponse;
 import pl.zajecia.backendproject.shop.service.ProductService;
 
 import java.util.List;
@@ -45,5 +49,15 @@ public class ProductController {
     public ResponseEntity<List<Product>> gettingProducts() {
         List<Product> products = productService.gettingProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(ProductCannotBeEmptyException.class)
+        public ResponseEntity<ProductCannotBeEmptyResponse> handleProductCannotBeEmptyException(ProductCannotBeEmptyException e) {
+        return new ResponseEntity<>(new ProductCannotBeEmptyResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ProductDontExistsException.class)
+        public ResponseEntity<ProductDontExistsResponse> handleProductDontExistsException(ProductDontExistsException e){
+        return new ResponseEntity<>(new ProductDontExistsResponse(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }
