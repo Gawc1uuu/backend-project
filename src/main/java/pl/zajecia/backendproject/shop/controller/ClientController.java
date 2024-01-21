@@ -3,16 +3,16 @@ package pl.zajecia.backendproject.shop.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.zajecia.backendproject.shop.exception.InvalidCredentialsException;
 import pl.zajecia.backendproject.shop.exception.UserAlreadyExistsException;
+import pl.zajecia.backendproject.shop.exception.UserNotFoundException;
 import pl.zajecia.backendproject.shop.model.Client;
 import pl.zajecia.backendproject.shop.model.command.ClientCommand;
 import pl.zajecia.backendproject.shop.model.command.LoginCommand;
-import pl.zajecia.backendproject.shop.response.UserAlreadyExistsResponse;
+import pl.zajecia.backendproject.shop.reponse.InvalidCredentialsResponse;
+import pl.zajecia.backendproject.shop.reponse.UserAlreadyExistsResponse;
+import pl.zajecia.backendproject.shop.reponse.UserNotFoundResponse;
 import pl.zajecia.backendproject.shop.service.ClientService;
 
 @RestController
@@ -38,15 +38,13 @@ public class ClientController {
     public ResponseEntity<UserAlreadyExistsResponse> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
         return new ResponseEntity<>(new UserAlreadyExistsResponse(e.getMessage(), e.getEmail()), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<InvalidCredentialsResponse> handleInvalidCredentialsException(InvalidCredentialsException e) {
+        return new ResponseEntity<>(new InvalidCredentialsResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 
-//    TODO: dodac endpoint do pobania wszystkich zamowien danego klienta
-//    TODO: dodac endpoint do pobrania ostatniego zamowienia danego klienta
-//    TODO: walidacja zamowienia ilosc produktow nie moze byc wieksza niz ilosc produktow w magazynie
-//    TODO: zwrocic zamoowienie po zlozeniu go
-//    WEBSOCKETS
-//    SWAGGER
-//    DOKUMENTACJA
-//    STATUS ZAMOWIENIA
-
-
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<UserNotFoundResponse> handleUserNotFoundException(UserNotFoundException e){
+        return new ResponseEntity<>(new UserNotFoundResponse(e.getMessage(), e.getEmail()), HttpStatus.BAD_REQUEST);
+    }
 }
