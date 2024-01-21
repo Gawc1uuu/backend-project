@@ -1,9 +1,7 @@
 package pl.zajecia.backendproject.shop.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.zajecia.backendproject.shop.exception.InvalidCredentialsException;
@@ -40,7 +38,6 @@ public class ClientController {
     public ResponseEntity<UserAlreadyExistsResponse> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
         return new ResponseEntity<>(new UserAlreadyExistsResponse(e.getMessage(), e.getEmail()), HttpStatus.BAD_REQUEST);
     }
-
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<InvalidCredentialsResponse> handleInvalidCredentialsException(InvalidCredentialsException e) {
         return new ResponseEntity<>(new InvalidCredentialsResponse(e.getMessage()), HttpStatus.BAD_REQUEST);

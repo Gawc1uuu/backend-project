@@ -28,10 +28,9 @@ public class Order {
     private Set<OrderItem> orderItems = new HashSet<>();
     private double totalPrice;
 
-    public Order(LocalDateTime orderDate, Client client, Set<OrderItem> orderItems, double totalPrice) {
+    public Order(LocalDateTime orderDate, Client client, double totalPrice) {
         this.orderDate = orderDate;
         this.client = client;
-        this.orderItems = orderItems;
         this.totalPrice = totalPrice;
     }
 }
