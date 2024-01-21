@@ -10,7 +10,7 @@ import lombok.Value;
 @Setter
 public class ProductCommand {
     private String name;
-    private Long price;
-    private Long quantity;
+    private double price;
+    private int quantity;
 
 }
