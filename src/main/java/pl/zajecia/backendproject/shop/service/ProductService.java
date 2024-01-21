@@ -1,7 +1,9 @@
 package pl.zajecia.backendproject.shop.service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 import pl.zajecia.backendproject.shop.exception.ProductCannotBeEmptyException;
 import pl.zajecia.backendproject.shop.exception.ProductDontExistsException;
 import pl.zajecia.backendproject.shop.model.Product;
@@ -14,6 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository repository;
+
+
 
     public void addProduct(ProductCommand command) {
         if(command.getName()==null) throw new ProductCannotBeEmptyException("name cannot be null");
