@@ -1,4 +1,4 @@
-package pl.zajecia.backendproject.shop.reponse;
+package pl.zajecia.backendproject.shop.response;
 
 public class ProductCannotBeEmptyResponse {
     private String message;

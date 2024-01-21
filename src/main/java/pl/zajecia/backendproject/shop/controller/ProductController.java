@@ -1,8 +1,6 @@
 package pl.zajecia.backendproject.shop.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +9,8 @@ import pl.zajecia.backendproject.shop.exception.ProductDontExistsException;
 import pl.zajecia.backendproject.shop.model.Product;
 import pl.zajecia.backendproject.shop.model.command.ProductCommand;
 import pl.zajecia.backendproject.shop.model.dto.ProductDto;
-import pl.zajecia.backendproject.shop.reponse.ProductCannotBeEmptyResponse;
-import pl.zajecia.backendproject.shop.reponse.ProductDontExistsResponse;
+import pl.zajecia.backendproject.shop.response.ProductCannotBeEmptyResponse;
+import pl.zajecia.backendproject.shop.response.ProductDontExistsResponse;
 import pl.zajecia.backendproject.shop.service.ProductService;
 
 import java.util.List;

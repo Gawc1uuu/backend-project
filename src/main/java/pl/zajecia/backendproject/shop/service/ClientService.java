@@ -18,17 +18,6 @@ public class ClientService {
 
     private final ClientRepository repository;
 
-    /*
-    private String name;
-    private String email;
-    private String lastName;
-    private LocalDate birthDate;
-    private String userName;
-    private String password;
-    private String adress;
-    private String phoneNumber;
-     */
-
     @PostConstruct
     public void init() {
         repository.saveAndFlush(new Client("Seba","seba@gmail.com","Czerniak", LocalDate.now(),"seba","seba","Warszawa","123456789"));
