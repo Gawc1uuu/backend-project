@@ -11,8 +11,8 @@ import pl.zajecia.backendproject.shop.model.Client;
 import pl.zajecia.backendproject.shop.model.command.ClientCommand;
 import pl.zajecia.backendproject.shop.model.command.LoginCommand;
 import pl.zajecia.backendproject.shop.reponse.InvalidCredentialsResponse;
-import pl.zajecia.backendproject.shop.reponse.UserAlreadyExistsResponse;
 import pl.zajecia.backendproject.shop.reponse.UserNotFoundResponse;
+import pl.zajecia.backendproject.shop.response.UserAlreadyExistsResponse;
 import pl.zajecia.backendproject.shop.service.ClientService;
 
 @RestController
