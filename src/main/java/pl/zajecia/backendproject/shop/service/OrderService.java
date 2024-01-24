@@ -3,6 +3,8 @@ package pl.zajecia.backendproject.shop.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.zajecia.backendproject.shop.exception.OrderQuantityIsTooHighException;
+import pl.zajecia.backendproject.shop.exception.ProductDontExistsException;
 import pl.zajecia.backendproject.shop.model.Client;
 import pl.zajecia.backendproject.shop.model.Order;
 import pl.zajecia.backendproject.shop.model.OrderItem;
@@ -34,14 +36,22 @@ public class OrderService {
 
         double totalPrice = 0;
         for (OrderItemCommand orderItem : orderItems) {
-            Product product = productRepository.findById(orderItem.getProductId()).orElseThrow(() -> new IllegalArgumentException("Product with that id dont exist"));
+//            TODO: Poprawić exception dla ProductDontExistsException (Szuka Id po "products: id" a nie po "orderItem: productId")
+            Product product = productRepository.findById(orderItem.getProductId()).orElseThrow(() -> new ProductDontExistsException("Product with that id dont exist"));
             totalPrice = totalPrice + product.getPrice() * orderItem.getQuantity();
             OrderItem orderItem1 = new OrderItem(orderItem.getQuantity(), product, order);
 
             orderItemRepository.save(orderItem1);
 
-            product.setQuantity(product.getQuantity() - orderItem.getQuantity());
-            //TODO: sprawdzic czy mozemy zamowic taka ilosc a jesli nie to zrobic wyjatek
+      /*   Sprawdza czy ilość zamówionego produktu nie przekracza ilości produktu na stanie. Zapobiega też zamiawiana ilości = 0,
+           jeżeli nie spełnia warunków uruchamia się wyjątek z odpowiednią wiadomościa */
+            // TODO: Przy wyświetleniu wyjątku dodać jaką ilość ma produkt i ją wyświetlić (product.getQuantity())
+            if(product.getQuantity() >= orderItem.getQuantity() && orderItem.getQuantity()!=0){
+                product.setQuantity(product.getQuantity() - orderItem.getQuantity());
+            } else {
+                throw new OrderQuantityIsTooHighException("Cannot order products with this quantity");
+            }
+
             productRepository.save(product);
         }
         order.setTotalPrice(totalPrice);
