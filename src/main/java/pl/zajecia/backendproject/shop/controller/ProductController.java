@@ -1,8 +1,10 @@
 package pl.zajecia.backendproject.shop.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import pl.zajecia.backendproject.shop.exception.ProductCannotBeEmptyException;
 import pl.zajecia.backendproject.shop.exception.ProductDontExistsException;
@@ -22,6 +24,8 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @PostMapping
     public ResponseEntity<Void> addProduct(@RequestBody ProductCommand command) {
@@ -46,16 +50,17 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> gettingProducts() {
         List<Product> products = productService.gettingProducts();
+        simpMessagingTemplate.convertAndSend("/topic/greetings", "Hello");
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @ExceptionHandler(ProductCannotBeEmptyException.class)
-        public ResponseEntity<ProductCannotBeEmptyResponse> handleProductCannotBeEmptyException(ProductCannotBeEmptyException e) {
+    public ResponseEntity<ProductCannotBeEmptyResponse> handleProductCannotBeEmptyException(ProductCannotBeEmptyException e) {
         return new ResponseEntity<>(new ProductCannotBeEmptyResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ProductDontExistsException.class)
-        public ResponseEntity<ProductDontExistsResponse> handleProductDontExistsException(ProductDontExistsException e){
+    public ResponseEntity<ProductDontExistsResponse> handleProductDontExistsException(ProductDontExistsException e) {
         return new ResponseEntity<>(new ProductDontExistsResponse(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

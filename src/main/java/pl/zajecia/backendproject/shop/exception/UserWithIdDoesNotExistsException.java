@@ -7,11 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserNotFoundException extends RuntimeException{
+@AllArgsConstructor
+public class UserWithIdDoesNotExistsException extends RuntimeException {
     private String message;
-    private String email;
-
-
+    private Long id;
 }

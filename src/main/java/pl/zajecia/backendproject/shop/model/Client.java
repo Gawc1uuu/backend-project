@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -24,6 +26,8 @@ public class Client {
     private String password;
     private String adress;
     private String phoneNumber;
+    @OneToMany(mappedBy = "client")
+    private Set<Order> orders = new HashSet<>();
 
 
     public Client(String name, String email, String lastName, LocalDate birthDate, String userName, String password, String adress, String phoneNumber) {

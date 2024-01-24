@@ -22,12 +22,13 @@ public class OrderController {
 
     @PostMapping("/clients/{clientId}")
     public ResponseEntity<OrderDto> addOrder(@PathVariable Long clientId, @RequestBody List<OrderItemCommand> orderItems) {
-        orderService.addOrder(clientId, orderItems);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        Order order = orderService.addOrder(clientId, orderItems);
+        OrderDto orderDto = OrderDto.fromEntity(order);
+        return new ResponseEntity<>(orderDto, HttpStatus.ACCEPTED);
     }
 
     @ExceptionHandler(OrderQuantityIsTooHighException.class)
-    public ResponseEntity<OrderQuantityIsTooHighResponse> handleOrderQuantityIsTooHighException(OrderQuantityIsTooHighException e){
+    public ResponseEntity<OrderQuantityIsTooHighResponse> handleOrderQuantityIsTooHighException(OrderQuantityIsTooHighException e) {
         return new ResponseEntity<>(new OrderQuantityIsTooHighResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

@@ -1,6 +1,8 @@
 package pl.zajecia.backendproject.shop.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.zajecia.backendproject.shop.exception.OrderQuantityIsTooHighException;
@@ -29,7 +31,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public void addOrder(Long clientId, List<OrderItemCommand> orderItems) {
+    public Order addOrder(Long clientId, List<OrderItemCommand> orderItems) {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new IllegalArgumentException("Client with that id dont exist"));
         Order order = new Order(LocalDateTime.now(), client, 0);
         orderRepository.save(order);
@@ -40,13 +42,12 @@ public class OrderService {
             Product product = productRepository.findById(orderItem.getProductId()).orElseThrow(() -> new ProductDontExistsException("Product with that id dont exist"));
             totalPrice = totalPrice + product.getPrice() * orderItem.getQuantity();
             OrderItem orderItem1 = new OrderItem(orderItem.getQuantity(), product, order);
-
             orderItemRepository.save(orderItem1);
 
       /*   Sprawdza czy ilość zamówionego produktu nie przekracza ilości produktu na stanie. Zapobiega też zamiawiana ilości = 0,
            jeżeli nie spełnia warunków uruchamia się wyjątek z odpowiednią wiadomościa */
             // TODO: Przy wyświetleniu wyjątku dodać jaką ilość ma produkt i ją wyświetlić (product.getQuantity())
-            if(product.getQuantity() >= orderItem.getQuantity() && orderItem.getQuantity()!=0){
+            if (product.getQuantity() >= orderItem.getQuantity() && orderItem.getQuantity() != 0) {
                 product.setQuantity(product.getQuantity() - orderItem.getQuantity());
             } else {
                 throw new OrderQuantityIsTooHighException("Cannot order products with this quantity");
@@ -57,6 +58,12 @@ public class OrderService {
         order.setTotalPrice(totalPrice);
         orderRepository.save(order);
 
+
+        OrderDto orderDto = OrderDto.fromEntity(order);
+
+
+        return order;
     }
+
 
 }

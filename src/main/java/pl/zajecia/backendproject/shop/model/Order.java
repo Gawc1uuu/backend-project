@@ -32,5 +32,7 @@ public class Order {
         this.orderDate = orderDate;
         this.client = client;
         this.totalPrice = totalPrice;
+
+        client.getOrders().add(this);
     }
 }
